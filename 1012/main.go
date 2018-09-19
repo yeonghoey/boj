@@ -34,7 +34,7 @@ func main() {
 func solve(poss map[pos]bool) int {
 	count, mark := 0, make(map[pos]bool)
 	for p := range poss {
-		if !mark[p] && poss[p] {
+		if !mark[p] {
 			bfs(p, mark, poss)
 			count++
 		}
