@@ -66,8 +66,8 @@ func TestSolve(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		m, n, _, poss := parse(test.smap)
-		got := solve(m, n, poss)
+		_, _, _, poss := parse(test.smap)
+		got := solve(poss)
 		if got != test.want {
 			t.Errorf("solve(%v) = %d", test.smap, got)
 		}

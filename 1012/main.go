@@ -16,8 +16,8 @@ var reader *bufio.Reader = bufio.NewReader(os.Stdin)
 func main() {
 	t := nextInt()
 	for t > 0 {
-		m := nextInt()
-		n := nextInt()
+		nextInt() // m
+		nextInt() // n
 		k := nextInt()
 		poss := make(map[pos]bool)
 		for i := 0; i < k; i++ {
@@ -25,24 +25,24 @@ func main() {
 			y := nextInt()
 			poss[pos{x, y}] = true
 		}
-		count := solve(m, n, poss)
+		count := solve(poss)
 		fmt.Println(count)
 		t--
 	}
 }
 
-func solve(m, n int, poss map[pos]bool) int {
+func solve(poss map[pos]bool) int {
 	count, mark := 0, make(map[pos]bool)
 	for p := range poss {
 		if !mark[p] && poss[p] {
-			bfs(m, n, p, mark, poss)
+			bfs(p, mark, poss)
 			count++
 		}
 	}
 	return count
 }
 
-func bfs(m, n int, p pos, mark, poss map[pos]bool) {
+func bfs(p pos, mark, poss map[pos]bool) {
 	q := []pos{p}
 
 	for h := 0; h < len(q); h++ {
