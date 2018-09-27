@@ -35,5 +35,39 @@ func solve(as []int) int {
 	copy(asSorted, as)
 	sort.Ints(asSorted)
 
-	return asSorted[0] * asSorted[n-1]
+	lo := asSorted[0]
+	hi := asSorted[n-1]
+
+	answer := 1
+	for i, a := range asSorted {
+		if a == 1 {
+			continue
+		}
+
+		answer *= a
+
+		for j := i + 1; j < n; j++ {
+			if asSorted[j]%a == 0 {
+				asSorted[j] /= a
+			}
+		}
+	}
+
+	if answer == hi {
+		answer *= lo
+	}
+
+	return answer
+}
+
+func solveEasy(as []int) int {
+	n := len(as)
+	asSorted := make([]int, n)
+	copy(asSorted, as)
+	sort.Ints(asSorted)
+
+	lo := asSorted[0]
+	hi := asSorted[n-1]
+
+	return lo * hi
 }

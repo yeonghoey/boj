@@ -20,5 +20,9 @@ func TestSolve(t *testing.T) {
 		if got := solve(c.as); got != c.want {
 			t.Errorf("solve(%v) = %d, want %d", c.as, got, c.want)
 		}
+
+		if got := solveEasy(c.as); got != c.want {
+			t.Errorf("solveEasy(%v) = %d, want %d", c.as, got, c.want)
+		}
 	}
 }
