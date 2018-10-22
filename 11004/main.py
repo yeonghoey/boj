@@ -1,36 +1,32 @@
-from random import randint
-N, K = (int(term) for term in input().split())
-A = [int(term) for term in input().split()]
+import sys
 
-begin = 0
-end = N
-k = K-1
-answer = None
+N, K = (int(term) for term in sys.stdin.readline().split())
+A = sys.stdin.readline().split()
+for i in range(N):
+    A[i] = int(A[i])
 
-while True:
-    length = end - begin
-    if length < 1:
-        break
+K -= 1
 
-    pi, i = randint(begin, end-1), begin
-    A[begin], A[pi] = A[pi], A[begin]
-    pivot = A[begin]
-    for j in range(begin+1, end):
-        if A[j] < pivot:
-            i += 1
-            A[i], A[j] = A[j], A[i]
-    A[begin], A[i] = A[i], A[begin]
+def partition(begin, end):
+    lo, pi = begin, end-1
+    pivot = A[pi]
+    for i in range(begin, end-1):
+        if A[i] <= pivot:
+            A[lo], A[i] = A[i], A[lo]
+            lo += 1
+    A[lo], A[pi] = A[pi], A[lo]
+    return lo
 
-    if i == k:
-        answer = A[i]
-        break
 
-    if i < k:
-        begin, end, k = i+1, end, k-i
-        continue
+def f(begin, end):
+    lo = partition(begin, end)
 
-    if i > k:
-        begin, end, k = begin, i, k
-        continue
+    if lo < K:
+        return f(lo+1, end)
 
-print(answer)
+    if lo > K:
+        return f(begin, lo)
+
+    return A[K]
+
+print(f(0, N))
