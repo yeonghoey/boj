@@ -38,31 +38,34 @@ func main() {
 	}
 }
 
+type item struct {
+	this int
+	acc  int
+}
+
 func solve(K int, C []int) int {
-	table := [][]int{}
+	table := [][]item{}
 	for i := 0; i < K; i++ {
-		table = append(table, make([]int, K))
+		table = append(table, make([]item, K))
 	}
 
 	for to := 0; to < K; to++ {
+		table[to][to] = item{C[to], 0}
 		for from := to - 1; from >= 0; from-- {
-			x := -1
-
+			this, acc := -1, -1
 			for part := from; part < to; part++ {
 				left := table[from][part]
 				right := table[part+1][to]
-				comb := left + right
-				if x < 0 || x > comb {
-					x = comb
+				comb := left.acc + right.acc
+				if acc < 0 || acc > comb {
+					this = left.this + right.this
+					acc = comb
 				}
 			}
 
-			table[from][to] = x
-			for ci := from; ci <= to; ci++ {
-				table[from][to] += C[ci]
-			}
+			table[from][to] = item{this, this + acc}
 		}
 	}
 
-	return table[0][K-1]
+	return table[0][K-1].acc
 }
