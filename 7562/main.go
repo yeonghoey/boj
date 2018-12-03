@@ -15,7 +15,7 @@ type node struct {
 	cost int
 }
 
-var offsets = []pos{
+var move = [...]pos{
 	{-2, 1}, {-1, 2}, {1, 2}, {2, 1},
 	{2, -1}, {1, -2}, {-1, -2}, {-2, -1},
 }
@@ -63,12 +63,13 @@ func process() {
 		a := q[0]
 		q = q[1:]
 
-		if a.y == e.y && a.x == e.x {
+		if a.pos == e {
 			cost = a.cost
+			break
 		}
 
-		for _, o := range offsets {
-			b := pos{a.y + o.y, a.x + o.x}
+		for _, d := range move {
+			b := pos{a.y + d.y, a.x + d.x}
 			if !(0 <= b.y && b.y < l) || !(0 <= b.x && b.x < l) {
 				continue
 			}
