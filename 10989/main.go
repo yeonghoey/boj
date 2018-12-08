@@ -10,19 +10,29 @@ const (
 	maxNumber = 10000
 )
 
-func main() {
-	reader := bufio.NewReader(os.Stdin)
-	writer := bufio.NewWriter(os.Stdout)
+var scanner *bufio.Scanner
+var writer *bufio.Writer
 
-	nextInt := func() int {
-		var n int
-		_, _ = fmt.Fscan(reader, &n)
-		return n
+func init() {
+	scanner = bufio.NewScanner(os.Stdin)
+	scanner.Split(bufio.ScanWords)
+	writer = bufio.NewWriter(os.Stdout)
+}
+
+func nextInt() int {
+	scanner.Scan()
+	x := 0
+	for _, b := range scanner.Bytes() {
+		x *= 10
+		x += int(b - '0')
 	}
+	return x
+}
 
+func main() {
+	N := nextInt()
 	a := make([]int, maxNumber+1)
-	n := nextInt()
-	for i := 0; i < n; i++ {
+	for i := 0; i < N; i++ {
 		a[nextInt()]++
 	}
 
