@@ -36,7 +36,10 @@ func (a withIndex) Len() int {
 }
 
 func (a withIndex) Less(i, j int) bool {
-	return a[i].value < a[j].value
+	if a[i].value != a[j].value {
+		return a[i].value < a[j].value
+	}
+	return a[i].index < a[j].index
 }
 
 func (a withIndex) Swap(i, j int) {
@@ -51,7 +54,7 @@ func main() {
 		A[i].index = i
 	}
 
-	sort.Stable(withIndex(A))
+	sort.Sort(withIndex(A))
 
 	pMap := make(map[int]int)
 	for i, e := range A {
