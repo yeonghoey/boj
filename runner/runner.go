@@ -48,21 +48,29 @@ func (r *Runner) Run(input string) *Result {
 		log.Fatal(err)
 	}
 
-	output := buffer.String()
+	output := string(normalize(buffer.Bytes()))
 	got := strings.TrimSpace(output)
 	return &Result{r.t, input, got}
 }
 
-// WantFile tests the result against the content of wantOutputName.
+// Want tests the result against the content of wantOutputName.
 func (r *Result) Want(wantOutputName string) {
 	content, err := ioutil.ReadFile(wantOutputName)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	want := string(content)
+	want := string(normalize(content))
 	want = strings.TrimSpace(want)
 	if r.got != want {
 		r.t.Errorf("Input: %s, got %s, want %s", r.input, r.got, want)
 	}
+}
+
+func normalize(b []byte) []byte {
+	// Win -> Unix: replace CR LF with LF
+	b = bytes.Replace(b, []byte("\r\n"), []byte("\n"), -1)
+	// Mac -> Unix: replace CF with LF
+	b = bytes.Replace(b, []byte("\r"), []byte("\n"), -1)
+	return b
 }
