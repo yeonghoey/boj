@@ -2,9 +2,9 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"os"
-	"strings"
 )
 
 var scanner *bufio.Scanner
@@ -34,14 +34,18 @@ func main() {
 
 	A := make([]int, M+1)
 
-	writer := bufio.NewWriter(os.Stdout)
-	defer writer.Flush()
+	var buf bytes.Buffer
 
 	var f func(int)
 	f = func(m int) {
 		if m > M {
-			s := strings.Trim(fmt.Sprint(A[1:]), "[]")
-			fmt.Fprintln(writer, s)
+			for i := 1; i <= M; i++ {
+				buf.WriteByte(byte(A[i] + '0'))
+				if i < M {
+					buf.WriteByte(' ')
+				}
+			}
+			buf.WriteByte('\n')
 			return
 		}
 		for x := 1; x <= N; x++ {
@@ -50,4 +54,5 @@ func main() {
 		}
 	}
 	f(1)
+	fmt.Println(buf.String())
 }
