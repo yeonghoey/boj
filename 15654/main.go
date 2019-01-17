@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 	"sort"
-	"strings"
+	"strconv"
 )
 
 var scanner *bufio.Scanner
@@ -34,20 +34,33 @@ func main() {
 	N := nextInt()
 	M := nextInt()
 	numbers := make([]int, N)
-	used := make([]bool, N)
-	selects := make([]int, M)
-
 	for i := range numbers {
 		numbers[i] = nextInt()
 	}
 	sort.Ints(numbers)
 
+	snums := make([]string, N)
+	for i, k := range numbers {
+		snums[i] = strconv.Itoa(k)
+	}
+
 	var buf bytes.Buffer
+	selects := make([]int, M)
+	output := func() {
+		for i, sel := range selects {
+			buf.WriteString(snums[sel])
+			if i < M-1 {
+				buf.WriteByte(' ')
+			}
+		}
+		buf.WriteByte('\n')
+	}
+
+	used := make([]bool, N)
 	var f func(int, int)
 	f = func(n, m int) {
 		if m == M {
-			s := strings.Trim(fmt.Sprint(selects), "[]")
-			fmt.Fprintln(&buf, s)
+			output()
 			return
 		}
 		for i := 0; i < N; i++ {
@@ -55,7 +68,7 @@ func main() {
 				continue
 			}
 
-			selects[m] = numbers[i]
+			selects[m] = i
 			used[i] = true
 			f(i+1, m+1)
 			used[i] = false
