@@ -57,8 +57,8 @@ func main() {
 	}
 
 	used := make([]bool, N)
-	var f func(int, int)
-	f = func(n, m int) {
+	var f func(int)
+	f = func(m int) {
 		if m == M {
 			output()
 			return
@@ -70,11 +70,11 @@ func main() {
 
 			selects[m] = i
 			used[i] = true
-			f(i+1, m+1)
+			f(m + 1)
 			used[i] = false
 		}
 	}
 
-	f(0, 0)
+	f(0)
 	fmt.Println(buf.String())
 }
