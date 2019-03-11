@@ -38,10 +38,14 @@ func main() {
 		W[i] = row
 	}
 
+	var buffer [10][1024]int
 	var f func(int, int, int) int
 	f = func(k, node, bitmask int) int {
 		if k == N-1 {
 			return W[node][0]
+		}
+		if buffer[node][bitmask] > 0 {
+			return buffer[node][bitmask]
 		}
 		best := 0
 		for next := 0; next < N; next++ {
@@ -61,6 +65,7 @@ func main() {
 				best = cost
 			}
 		}
+		buffer[node][bitmask] = best
 		return best
 	}
 	answer := f(0, 0, 1)
